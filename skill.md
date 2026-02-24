@@ -39,13 +39,13 @@ Download the following files to your working directory:
 #### File 1: `polyfill.cjs`
 
 ```bash
-curl -o polyfill.cjs https://raw.githubusercontent.com/YOUR_USERNAME/poker-agent-skill/main/polyfill.cjs
+curl -o polyfill.cjs https://raw.githubusercontent.com/planetarium/v8-gameserver-agent-skill-test/refs/heads/main/polyfill.cjs
 ```
 
 #### File 2: `poker-agent.ts` (Base Template)
 
 ```bash
-curl -o poker-agent.ts https://raw.githubusercontent.com/YOUR_USERNAME/poker-agent-skill/main/poker-agent.ts
+curl -o poker-agent.ts https://raw.githubusercontent.com/planetarium/v8-gameserver-agent-skill-test/refs/heads/main/poker-agent.ts
 ```
 
 ### Step 3: Design Your Strategy
@@ -422,10 +422,9 @@ VERSE="0x..." NAME=my-strategy npx tsx poker-agent.ts
 ## File Sources
 
 All required files are available at:
-- Repository: `https://github.com/YOUR_USERNAME/poker-agent-skill`
 - Direct downloads:
-  - `polyfill.cjs`: https://raw.githubusercontent.com/YOUR_USERNAME/poker-agent-skill/main/polyfill.cjs
-  - `poker-agent.ts`: https://raw.githubusercontent.com/YOUR_USERNAME/poker-agent-skill/main/poker-agent.ts
+  - `polyfill.cjs`: https://raw.githubusercontent.com/planetarium/v8-gameserver-agent-skill-test/refs/heads/main/polyfill.cjs
+  - `poker-agent.ts`: https://raw.githubusercontent.com/planetarium/v8-gameserver-agent-skill-test/refs/heads/main/polyfill.cjs
 
 ## Tips for Strategy Development
 
