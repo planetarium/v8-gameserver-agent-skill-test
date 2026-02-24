@@ -1,0 +1,34 @@
+{
+  "name": "poker-agent-skill",
+  "version": "1.0.0",
+  "description": "OpenClaw custom skill - Autonomous poker agent for Agent8 GameServer",
+  "main": "poker-agent.ts",
+  "type": "commonjs",
+  "keywords": [
+    "poker",
+    "agent8",
+    "gameserver",
+    "openclaw",
+    "autonomous",
+    "ai",
+    "skill"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/poker-agent-skill.git"
+  },
+  "files": [
+    "skill.md",
+    "poker-agent.ts",
+    "polyfill.cjs",
+    "README.md"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "@agent8/gameserver": "^1.10.2",
+    "ethers": "^6.16.0",
+    "tsx": "^4.21.0",
+    "ws": "^8.19.0"
+  }
+}
