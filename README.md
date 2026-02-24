@@ -1,130 +1,348 @@
 # Poker Agent Skill for OpenClaw
 
-OpenClaw 커스텀 스킬 - Agent8 GameServer에서 자율적으로 포커를 플레이하는 AI 에이전트
+OpenClaw custom skill - Autonomous poker-playing AI agent for Agent8 GameServer.
 
-## 📁 파일 구조
+This repository contains a skill that enables OpenClaw agents (or any autonomous agent) to design and implement their own poker strategy, then play poker autonomously on Agent8 GameServer.
 
-```
-poker-agent-skill/
-├── skill.md           # OpenClaw 스킬 메인 문서 (배포용)
-├── poker-agent.ts     # 포커 에이전트 메인 코드
-├── polyfill.cjs       # Node.js 폴리필
-├── package.json       # 패키지 정보 (참고용)
-├── README.md          # 이 파일
-└── .gitignore         # Git 제외 파일
-```
-
-## 🚀 배포 방법
-
-### 1. GitHub에 업로드
-
-```bash
-# 이 디렉토리를 GitHub 저장소로 푸시
-git init
-git add .
-git commit -m "Add poker agent skill"
-git remote add origin https://github.com/YOUR_USERNAME/poker-agent-skill.git
-git push -u origin main
-```
-
-### 2. skill.md의 URL 업데이트
-
-`skill.md` 파일에서 다음 URL들을 실제 GitHub 주소로 변경:
+## 📁 File Structure
 
 ```
-YOUR_USERNAME → 실제 GitHub 사용자명
+v8-gameserver-agent-skill-test/
+├── skill.md           # OpenClaw skill documentation (main entry point)
+├── poker-agent.ts     # Poker agent implementation with customizable strategy
+├── polyfill.cjs       # Node.js polyfills for browser APIs
+├── package.json       # Package metadata and dependencies
+├── README.md          # This file
+└── .gitignore         # Git ignore rules
 ```
 
-예시:
+## 🎯 What This Project Does
+
+This is an **OpenClaw skill** that teaches agents to:
+1. Connect to Agent8 GameServer poker games
+2. **Design their own poker strategy** (aggressive, conservative, mathematical, adaptive, etc.)
+3. Evaluate hand strength and calculate pot odds
+4. Make autonomous decisions (FOLD, CHECK, CALL, RAISE)
+5. Learn from results and adapt strategy over time
+
+**Key Feature**: Unlike simple bots, agents using this skill must **design and implement their own strategy** by customizing the `StrategyEngine` class parameters and decision logic.
+
+## 🚀 How to Use This Skill
+
+### Option 1: For OpenClaw Agents
+
+The simplest way to use this skill is to point an OpenClaw agent to the skill documentation:
+
 ```
-https://raw.githubusercontent.com/john/poker-agent-skill/main/polyfill.cjs
-https://raw.githubusercontent.com/john/poker-agent-skill/main/poker-agent.ts
+Read https://raw.githubusercontent.com/planetarium/v8-gameserver-agent-skill-test/main/skill.md and follow the instructions to play poker on Agent8
 ```
 
-### 3. OpenClaw에서 사용
+The agent will:
+1. Read the skill documentation
+2. Design a custom poker strategy
+3. Download required files
+4. Implement their strategy
+5. Run the poker agent autonomously
 
-배포 후, OpenClaw 에이전트에게 다음과 같이 지시:
+### Option 2: Direct Local Usage
 
-```
-Read https://raw.githubusercontent.com/YOUR_USERNAME/poker-agent-skill/main/skill.md and follow the instructions to play poker on Agent8
-```
+You can also run the poker agent directly for testing:
 
-또는:
+## 💡 Local Testing & Development
 
-```
-Read https://your-domain.com/poker-agent-skill/skill.md and follow the instructions to join poker game at verse 0x...
-```
+### 1. Install Dependencies
 
-## 💡 사용 예시 (로컬 테스트)
-
-### 의존성 설치
 ```bash
 npm install @agent8/gameserver@^1.10.2 ethers@^6.16.0 tsx@^4.21.0 ws@^8.19.0
 ```
 
-### 에이전트 실행
+### 2. Run the Agent
 
-Windows PowerShell:
+**Windows PowerShell:**
 ```powershell
 $env:VERSE="0x5ed994a3a9240fea2d1777bfb2cc0cd7d0a1f61b-1771833985558"
-$env:STRATEGY="balanced"
-$env:NAME="test-bot"
+$env:NAME="my-poker-bot"
 npx tsx poker-agent.ts
 ```
 
-Linux/Mac:
+**Linux/Mac:**
 ```bash
 VERSE="0x5ed994a3a9240fea2d1777bfb2cc0cd7d0a1f61b-1771833985558" \
-STRATEGY=balanced \
-NAME=test-bot \
+NAME=my-poker-bot \
 npx tsx poker-agent.ts
 ```
 
-## 🎯 전략 타입
+### 3. Customize the Strategy
 
-- **aggressive**: 공격적 플레이 (블러핑 30%)
-- **conservative**: 보수적 플레이 (블러핑 5%)
-- **balanced**: 균형잡힌 플레이 (블러핑 15%) - 기본값
-- **adaptive**: 적응형 플레이 (승률 기반 자동 조정)
+Before running, edit [poker-agent.ts](poker-agent.ts) to customize your poker strategy in the `StrategyEngine` class:
 
-## 📦 배포 플랫폼 옵션
+```typescript
+private getDefaultStrategy(): StrategyConfig {
+  return {
+    raiseThreshold: 0.6,    // Hand strength needed to raise
+    callThreshold: 0.4,     // Hand strength needed to call
+    foldThreshold: 0.3,     // Hand strength below which to fold
+    bluffProbability: 0.15, // How often to bluff (0.0-1.0)
+    aggressiveness: 0.5     // Bet sizing multiplier
+  };
+}
+```
 
-### Option 1: GitHub Pages
-가장 간단하고 무료입니다.
+## 🎯 Strategy Design
 
-1. GitHub 저장소 Settings → Pages
-2. Source: main branch
-3. 접근 URL: `https://YOUR_USERNAME.github.io/poker-agent-skill/skill.md`
+The agent comes with a customizable strategy engine. You can design different approaches:
 
-### Option 2: GitHub Raw
-추가 설정 없이 바로 사용 가능
+### Strategy Approaches
 
-- URL: `https://raw.githubusercontent.com/YOUR_USERNAME/poker-agent-skill/main/skill.md`
+- **Mathematical**: Calculate pot odds and equity, make EV-optimal decisions
+- **Aggressive**: Low raise thresholds, high bluff probability, large bets
+- **Conservative**: High thresholds, minimal bluffing, careful play
+- **Adaptive**: Track win rate and adjust strategy dynamically
 
-### Option 3: 커스텀 도메인
-자체 서버나 CDN 사용
+### Key Parameters
 
-- Vercel, Netlify, Cloudflare Pages 등
-- 예: `https://poker-agent.yourdomain.com/skill.md`
+| Parameter | Description | Range | Effect |
+|-----------|-------------|-------|--------|
+| `raiseThreshold` | Hand strength needed to raise | 0.0-1.0 | Higher = tighter raises |
+| `callThreshold` | Hand strength needed to call | 0.0-1.0 | Higher = fold more often |
+| `foldThreshold` | Fold below this strength | 0.0-1.0 | Higher = tighter play |
+| `bluffProbability` | How often to bluff | 0.0-1.0 | Higher = more bluffs |
+| `aggressiveness` | Bet sizing multiplier | 0.0-1.0 | Higher = bigger bets |
 
-## 🔧 커스터마이징
+## 🔧 Customization Guide
 
-### 다른 Verse ID로 변경
+### Modify Hand Evaluation
 
-`skill.md` 파일에서 예시 Verse ID를 실제 배포된 게임의 ID로 변경하세요.
+Edit the `HandEvaluator` class in [poker-agent.ts:59-145](poker-agent.ts#L59-L145) to change how hand strength is calculated:
 
-### 전략 수정
+```typescript
+evaluate(holeCards: string[], communityCards: string[]): number {
+  // Your custom hand evaluation logic
+  // Return: 0.0 (weak) to 1.0 (strong)
+}
+```
 
-`poker-agent.ts`의 `StrategyEngine` 클래스에서 전략 설정을 조정할 수 있습니다.
+### Modify Decision Logic
 
-### 핸드 평가 로직 개선
+Edit the `decide()` method in [poker-agent.ts:197-262](poker-agent.ts#L197-L262) to change decision-making:
 
-`HandEvaluator` 클래스를 수정하여 더 정교한 평가 로직을 구현할 수 있습니다.
+```typescript
+decide(handStrength, callAmount, pot, chips, currentBet, phase): Action {
+  // Your custom decision logic
+  // Consider: pot odds, position, stack sizes, game phase
+  // Return: { action: 'FOLD'|'CHECK'|'CALL'|'RAISE', amount?: number }
+}
+```
 
-## 📝 라이선스
+### Enable Adaptive Learning
+
+Uncomment line 327 in [poker-agent.ts:327](poker-agent.ts#L327) to enable strategy adaptation based on results:
+
+```typescript
+// this.adaptStrategy();  // Uncomment to enable
+```
+
+The agent will then adjust its strategy based on win rate.
+
+## 📦 Deployment Options
+
+### Option 1: GitHub Raw (Easiest)
+
+No setup required. The current repository is already accessible:
+
+```
+https://raw.githubusercontent.com/planetarium/v8-gameserver-agent-skill-test/main/skill.md
+```
+
+### Option 2: Fork and Customize
+
+1. Fork this repository
+2. Customize `poker-agent.ts` with your strategy
+3. Update URLs in `skill.md` to point to your fork
+4. Use: `https://raw.githubusercontent.com/YOUR_USERNAME/v8-gameserver-agent-skill-test/main/skill.md`
+
+### Option 3: GitHub Pages
+
+1. Go to repository Settings → Pages
+2. Set Source: main branch
+3. Access at: `https://YOUR_USERNAME.github.io/v8-gameserver-agent-skill-test/skill.md`
+
+### Option 4: Custom Domain
+
+Deploy to Vercel, Netlify, Cloudflare Pages, or your own server:
+
+```
+https://your-domain.com/poker-skill/skill.md
+```
+
+## 📊 Performance Tracking
+
+The agent automatically tracks performance statistics:
+
+```json
+{
+  "name": "my-poker-bot",
+  "wallet": "0x1234...",
+  "strategy": {
+    "wins": 12,
+    "losses": 8,
+    "totalHands": 20,
+    "winRate": "60%",
+    "successfulBluffs": 3,
+    "failedBluffs": 2
+  },
+  "active": true
+}
+```
+
+View stats by pressing `Ctrl+C` to stop the agent gracefully.
+
+## 🎮 Game State Information
+
+Your strategy has access to comprehensive game state:
+
+```typescript
+interface GameContext {
+  holeCards: string[];           // Your cards, e.g., ["A♠", "K♦"]
+  communityCards: string[];      // Board cards
+  pot: number;                   // Total pot size
+  currentBet: number;            // Amount to call
+  chips: number;                 // Your chip stack
+  status: string;                // Game phase: PREFLOP, FLOP, TURN, RIVER
+  players: Record<string, Player>; // All players' info
+  seats: string[];               // Player order
+  currentTurn: number;           // Whose turn
+}
+```
+
+## 🔍 Finding Your Verse ID
+
+To find the full Verse ID for a poker game:
+
+1. Visit the Verse8 game page, e.g., `https://verse8.io/K7J3z2z`
+2. View page source (`Ctrl+U` or `Cmd+U`)
+3. Search for `prefetchedVerseId`
+4. Copy the full ID with timestamp
+
+Format: `0x<hash>-<timestamp>`
+
+Example: `0x5ed994a3a9240fea2d1777bfb2cc0cd7d0a1f61b-1771833985558`
+
+## 🧪 Testing Multiple Strategies
+
+Run multiple agents with different strategies to test them against each other:
+
+**Terminal 1 - Aggressive Bot:**
+```bash
+VERSE="0x..." NAME=aggressive-bot npx tsx poker-agent.ts
+# Edit poker-agent.ts first: raiseThreshold=0.4, bluffProbability=0.3
+```
+
+**Terminal 2 - Conservative Bot:**
+```bash
+VERSE="0x..." NAME=conservative-bot npx tsx poker-agent.ts
+# Edit poker-agent.ts first: raiseThreshold=0.7, bluffProbability=0.05
+```
+
+**Terminal 3 - Your Custom Strategy:**
+```bash
+VERSE="0x..." NAME=my-strategy npx tsx poker-agent.ts
+# Your custom parameters
+```
+
+## 🐛 Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| **Connection timeout** | Verify Verse ID format: `0x<hash>-<timestamp>` |
+| **Auth errors** | Delete `.wallet-*.key` files and restart |
+| **Invalid actions** | Check that raises don't exceed available chips |
+| **Can't see cards** | Normal - agent will check/fold when cards hidden |
+| **Strategy not working** | Add `console.log()` statements to debug logic |
+
+## 📚 Technical Details
+
+### Architecture
+
+- **HandEvaluator**: Evaluates poker hands on 0.0-1.0 scale
+- **StrategyEngine**: Customizable decision-making engine
+- **PokerAgent**: Main agent class, handles game loop and server communication
+- **Wallet Management**: Auto-creates and persists Ethereum wallets for auth
+
+### Dependencies
+
+```json
+{
+  "@agent8/gameserver": "^1.10.2",  // Agent8 game server client
+  "ethers": "^6.16.0",              // Wallet and signing
+  "tsx": "^4.21.0",                 // TypeScript execution
+  "ws": "^8.19.0"                   // WebSocket support
+}
+```
+
+### Authentication
+
+Each agent:
+1. Creates or loads a wallet from `.wallet-<name>.key`
+2. Generates an auth token signed with wallet's private key
+3. Uses token to authenticate with game server
+
+Wallet files persist between runs.
+
+## 📖 Example Output
+
+```
+🎰 ============================================
+   AUTONOMOUS POKER AGENT
+   ============================================
+
+🤖 Agent: my-poker-bot
+   Wallet: 0x1234567890abcdef...
+
+✅ my-poker-bot connected to game server
+🎮 my-poker-bot joined room: main-room
+🔄 my-poker-bot starting game loop...
+
+💭 my-poker-bot thinking...
+  Phase: PREFLOP | Pot: $30 | To call: $10
+  Cards: A♠ K♦ | Community:
+  🧠 Hand: 50% | Effective: 50% | Bluff: false
+  ➡️  RAISE $45
+
+💭 my-poker-bot thinking...
+  Phase: FLOP | Pot: $90 | To call: $0
+  Cards: A♠ K♦ | Community: A♥ 7♣ 2♦
+  🧠 Hand: 75% | Effective: 75% | Bluff: false
+  ➡️  RAISE $60
+
+🎉 my-poker-bot WON!
+  📊 Record: 1W-0L (1 hands, 100.0% win rate)
+```
+
+## 🎓 Strategy Development Tips
+
+1. **Start Simple**: Begin with basic pot odds calculations
+2. **Test Extensively**: Play many hands to validate logic
+3. **Track Metrics**: Monitor win rate, bluff success, etc.
+4. **Iterate**: Continuously improve based on results
+5. **Study Opponents**: Add opponent modeling for advanced play
+6. **Consider Position**: Adjust strategy based on table position
+7. **Stack Awareness**: Adapt to short/deep stack situations
+
+## 📝 License
 
 MIT
 
-## 🤝 기여
+## 🤝 Contributing
 
-이슈나 PR은 언제든 환영합니다!
+Issues and pull requests are welcome!
+
+## 🔗 Related Links
+
+- [Agent8 GameServer Documentation](https://docs.agent8.gg)
+- [OpenClaw Documentation](https://www.openclaw.com)
+- [Verse8 Platform](https://verse8.io)
+
+---
+
+**Good luck at the tables! 🎰♠️♥️♣️♦️**
