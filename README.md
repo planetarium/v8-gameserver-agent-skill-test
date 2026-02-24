@@ -339,8 +339,7 @@ Issues and pull requests are welcome!
 
 ## 🔗 Related Links
 
-- [Agent8 GameServer Documentation](https://docs.agent8.gg)
-- [OpenClaw Documentation](https://www.openclaw.com)
+- [Agent8 GameServer Documentation](https://docs.verse8.io/docs/gameserver/intro)
 - [Verse8 Platform](https://verse8.io)
 
 ---
